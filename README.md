@@ -104,6 +104,30 @@ the tunnel URL and set the matching callback:
 PLAID_REDIRECT_URI=https://your-tunnel-or-domain.example/oauth-return
 ```
 
+To configure the redirect URI in Plaid, go here:
+
+[Plaid Dashboard -> Developers -> API](https://dashboard.plaid.com/developers/api)
+
+Then look for:
+
+```text
+Allowed redirect URIs
+```
+
+Click **Configure**, add the exact URI from `PLAID_REDIRECT_URI`, then save:
+
+```text
+https://your-tunnel-or-domain.example/oauth-return
+```
+
+Path in the dashboard:
+
+```text
+Team settings -> API -> Allowed redirect URIs -> Configure
+```
+
+Plaid docs confirm this location and requirement: [OAuth troubleshooting](https://plaid.com/docs/link/troubleshooting/) and [OAuth guide](https://plaid.com/docs/link/oauth/).
+
 The helper uses a two-tab OAuth flow: the setup tab stays open, Plaid Link opens
 in a separate tab, and the `/oauth-return` callback notifies the setup tab to
 resume Link with Plaid's `receivedRedirectUri`.
