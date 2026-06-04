@@ -56,13 +56,22 @@ Use the built server with a stdio MCP client:
 - `plaid_sync_transactions`
 - `plaid_get_identity`
 - `plaid_get_auth`
-- `plaid_get_liabilities`
-- `plaid_get_investment_holdings`
-- `plaid_get_investment_transactions`
 - `plaid_get_institution`
 - `plaid_list_institutions`
 
 All Plaid responses are returned as formatted JSON text.
+
+## Claude Skill
+
+A Claude Code project skill is included at:
+
+```text
+.claude/skills/plaid-readonly-mcp/SKILL.md
+```
+
+The skill assumes the MCP server is already installed and available to Claude as
+`plaid`. It contains usage and privacy guidance only; it does not install the
+server, run Plaid Link, exchange tokens, or onboard a bank connection.
 
 ## Connect A Bank With Plaid Link
 
@@ -92,7 +101,7 @@ You can override products with comma-separated env vars:
 
 ```text
 PLAID_PRODUCTS=transactions
-PLAID_OPTIONAL_PRODUCTS=identity,liabilities,investments
+PLAID_OPTIONAL_PRODUCTS=identity
 PLAID_COUNTRY_CODES=US
 ```
 
