@@ -1,6 +1,6 @@
 ---
 name: plaid-readonly-mcp
-description: Use when Claude needs to answer questions with an already-installed read-only Plaid MCP server configured as `plaid`, including Plaid Item metadata, accounts, balances, transactions, transaction sync, identity, auth, or institution metadata. Assumes credentials and bank connection already exist; do not use this skill for installing the codebase, configuring Plaid Link, exchanging tokens, or onboarding a new bank connection.
+description: Use when Claude needs to answer questions with an already-installed read-only Plaid MCP server configured as `plaid-readonly-mcp`, including Plaid Item metadata, accounts, balances, transactions, transaction sync, identity, auth, or institution metadata. Assumes credentials and bank connection already exist; do not use this skill for installing the codebase, configuring Plaid Link, exchanging tokens, or onboarding a new bank connection.
 ---
 
 # Plaid Read-Only MCP

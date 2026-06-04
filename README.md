@@ -33,7 +33,7 @@ Use the built server with a stdio MCP client:
 ```json
 {
   "mcpServers": {
-    "plaid": {
+    "plaid-readonly-mcp": {
       "command": "node",
       "args": ["C:\\path\\to\\plaid-readonly-mcp\\dist\\index.js"],
       "env": {
@@ -70,8 +70,9 @@ A Claude Code project skill is included at:
 ```
 
 The skill assumes the MCP server is already installed and available to Claude as
-`plaid`. It contains usage and privacy guidance only; it does not install the
-server, run Plaid Link, exchange tokens, or onboard a bank connection.
+`plaid-readonly-mcp`. It contains usage and privacy guidance only; it does not
+install the server, run Plaid Link, exchange tokens, or onboard a bank
+connection.
 
 ## Connect A Bank With Plaid Link
 
