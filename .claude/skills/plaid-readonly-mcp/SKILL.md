@@ -9,8 +9,6 @@ description: Use when Claude needs to answer questions with an already-installed
 
 Use the configured Plaid MCP tools directly. Do not install, configure, expose, or run the Plaid Link helper as part of this skill. The MCP server is read-only; token exchange and `.env` writes are outside this skill.
 
-When the MCP server is configured as `plaid`, Claude Code exposes these tools with the `mcp__plaid__` prefix. If the server was configured under a different MCP name, use the same tool names with that server prefix.
-
 ## Privacy Defaults
 
 - Default to sanitized summaries: counts, date ranges, categories, product status, and error codes.
@@ -20,21 +18,21 @@ When the MCP server is configured as `plaid`, Claude Code exposes these tools wi
 
 ## Tool Selection
 
-- `mcp__plaid__plaid_get_item`: Check the linked Item, institution ID, initialized products, available products, and consented products.
-- `mcp__plaid__plaid_get_accounts`: List account metadata. Use this before account-specific queries so you can map user language to `account_id`.
-- `mcp__plaid__plaid_get_balances`: Read balances. Treat this as sensitive; summarize unless detailed values are requested.
-- `mcp__plaid__plaid_get_transactions`: Query historical transactions for a date range. Use `account_ids` when the user asks about specific accounts.
-- `mcp__plaid__plaid_sync_transactions`: Prefer this for complete transaction history or incremental sync. Use `cursor` for follow-up pages and repeat while `has_more` is true.
-- `mcp__plaid__plaid_get_identity`: Read owner identity data. Treat as highly sensitive.
-- `mcp__plaid__plaid_get_auth`: Read auth/routing-style data. Treat as highly sensitive.
-- `mcp__plaid__plaid_get_institution`: Get metadata for a known institution ID.
-- `mcp__plaid__plaid_list_institutions`: Search/list institution metadata, optionally filtered by product.
+- `plaid_get_item`: Check the linked Item, institution ID, initialized products, available products, and consented products.
+- `plaid_get_accounts`: List account metadata. Use this before account-specific queries so you can map user language to `account_id`.
+- `plaid_get_balances`: Read balances. Treat this as sensitive; summarize unless detailed values are requested.
+- `plaid_get_transactions`: Query historical transactions for a date range. Use `account_ids` when the user asks about specific accounts.
+- `plaid_sync_transactions`: Prefer this for complete transaction history or incremental sync. Use `cursor` for follow-up pages and repeat while `has_more` is true.
+- `plaid_get_identity`: Read owner identity data. Treat as highly sensitive.
+- `plaid_get_auth`: Read auth/routing-style data. Treat as highly sensitive.
+- `plaid_get_institution`: Get metadata for a known institution ID.
+- `plaid_list_institutions`: Search/list institution metadata, optionally filtered by product.
 
 ## Transaction Workflow
 
-1. Use `mcp__plaid__plaid_get_accounts` when account context matters.
-2. Use `mcp__plaid__plaid_sync_transactions` with `count: 500` for broad history; page with `cursor` until `has_more` is false.
-3. Use `mcp__plaid__plaid_get_transactions` for bounded date-range questions.
+1. Use `plaid_get_accounts` when account context matters.
+2. Use `plaid_sync_transactions` with `count: 500` for broad history; page with `cursor` until `has_more` is false.
+3. Use `plaid_get_transactions` for bounded date-range questions.
 4. Set `include_original_description: true` when the user asks about raw bank descriptions, memos, comments, Zelle-like notes, or differences between Plaid-normalized and institution-provided text.
 5. Interpret Plaid transaction `amount` as positive for money out and negative for money in.
 6. Use `transaction_id` as the stable identifier for a transaction.
