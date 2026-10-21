@@ -1,0 +1,34 @@
+[Unit]
+Description=Plaid read-only remote MCP server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=plaid-mcp
+Group=plaid-mcp
+WorkingDirectory=/srv/plaid-readonly-mcp
+Environment=PORT=8805
+Environment=PLAID_MCP_BASE_URL=https://mcp.jensenabler.com/plaid
+Environment=PLAID_MCP_DATA_DIR=/var/lib/plaid-mcp
+Environment=NODE_NO_WARNINGS=1
+# Plaid keys (PLAID_CLIENT_ID, PLAID_SECRET, PLAID_ENV) — root-owned, placed by the owner.
+EnvironmentFile=-/etc/plaid-mcp/plaid.env
+LoadCredential=password-hash:/etc/plaid-mcp/password-hash
+LoadCredential=jwks.json:/etc/plaid-mcp/jwks.json
+LoadCredential=cookie-keys.json:/etc/plaid-mcp/cookie-keys.json
+LoadCredential=token-key:/etc/plaid-mcp/token-key
+ExecStart=/usr/bin/node /srv/plaid-readonly-mcp/remote/server.js
+Restart=always
+RestartSec=3
+TimeoutStopSec=15
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectHome=yes
+ProtectSystem=strict
+ReadWritePaths=/var/lib/plaid-mcp
+
+[Install]
+WantedBy=multi-user.target

@@ -1,5 +1,32 @@
 # Plaid Read-Only MCP Server
 
+Two ways to run it:
+
+- **Remote (`remote/`)** — an OAuth-protected Streamable HTTP MCP server for Claude/ChatGPT connectors,
+  holding any number of bank connections (Items). Deployed at `https://mcp.jensenabler.com/plaid/mcp`.
+- **Local stdio (`src/`)** — the original single-token server, described further below.
+
+## History length
+
+Plaid defaults new Items to 90 days of transactions. Both Link flows here request
+`transactions.days_requested = 730`, Plaid's maximum (override with
+`PLAID_TRANSACTIONS_DAYS_REQUESTED`). The value is fixed when an Item is created: an Item linked
+with less history must be removed and re-linked. Institutions may still return less than two years.
+
+## Remote server
+
+- `GET /plaid/link` — owner-only page (password sign-in) to link banks with Plaid Link and remove them.
+  Register `https://mcp.jensenabler.com/plaid/link/oauth-return` as an allowed redirect URI in the
+  Plaid Dashboard for OAuth institutions.
+- `/plaid/mcp` — read-only tools: `plaid_list_items`, `plaid_get_item`, `plaid_get_accounts`,
+  `plaid_get_balances`, `plaid_get_transactions`, `plaid_sync_transactions`, `plaid_get_institution`.
+  Tools address Items by `item_id`; access tokens never leave the server and are AES-256-GCM sealed at rest.
+- Secrets: Plaid keys in `/etc/plaid-mcp/plaid.env` (`PLAID_CLIENT_ID`, `PLAID_SECRET`, `PLAID_ENV=production`);
+  OAuth/encryption keys loaded as systemd credentials. See `deploy/`.
+- `npm test` runs the remote server tests against a fake Plaid client.
+
+## Local stdio server
+
 This is a local stdio MCP server that exposes read-only Plaid data retrieval tools.
 It does not expose Link token creation, token exchange, sandbox mutation, transfer,
 payment, processor, or item mutation endpoints.

@@ -1,6 +1,6 @@
 {
   "name": "plaid-readonly-mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Read-only Model Context Protocol server for Plaid data retrieval.",
   "type": "module",
   "bin": {
@@ -10,14 +10,22 @@
     "build": "tsc",
     "dev": "tsx src/index.ts",
     "link": "tsx src/link.ts",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "remote": "node remote/server.js",
+    "test": "node --test test/*.test.js"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22.22.0"
   },
   "dependencies": {
+    "@modelcontextprotocol/express": "2.0.0",
+    "@modelcontextprotocol/node": "2.0.0",
     "@modelcontextprotocol/sdk": "^1.29.0",
+    "@modelcontextprotocol/server": "2.0.0",
     "dotenv": "^17.4.2",
+    "express": "5.2.1",
+    "jose": "6.2.12",
+    "oidc-provider": "9.12.2",
     "plaid": "^42.2.0",
     "zod": "^4.1.13"
   },

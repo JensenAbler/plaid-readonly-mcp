@@ -94,11 +94,23 @@ function linkProducts(): Products[] {
   return products;
 }
 
+// Plaid defaults Items to 90 days of history; 730 is its maximum. It is fixed when the Item is
+// created, so an Item linked with less must be removed and re-linked to get more.
+function transactionDaysRequested(): number {
+  const raw = process.env.PLAID_TRANSACTIONS_DAYS_REQUESTED;
+  const value = raw ? Number(raw) : 730;
+  if (!Number.isInteger(value) || value < 1 || value > 730) {
+    throw new Error("PLAID_TRANSACTIONS_DAYS_REQUESTED must be an integer from 1 to 730.");
+  }
+  return value;
+}
+
 function safeConfig() {
   return {
     environment: plaidEnvironmentName(),
     clientName: process.env.PLAID_CLIENT_NAME ?? "Plaid MCP",
     products: linkProducts(),
+    transactionDaysRequested: transactionDaysRequested(),
     optionalProducts: productList("PLAID_OPTIONAL_PRODUCTS"),
     additionalConsentedProducts: productList("PLAID_ADDITIONAL_CONSENTED_PRODUCTS"),
     countryCodes: countryCodes(),
@@ -220,6 +232,9 @@ async function createLinkToken() {
   }
   if (additionalConsentedProducts?.length) {
     request.additional_consented_products = additionalConsentedProducts;
+  }
+  if (linkProducts().includes("transactions" as Products)) {
+    request.transactions = { days_requested: transactionDaysRequested() };
   }
   if (requiredIfSupportedProducts?.length) {
     request.required_if_supported_products = requiredIfSupportedProducts;
